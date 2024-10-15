@@ -1,0 +1,515 @@
+about:
+  date: October 15, 2024 15:46:55
+  recent_changes: works with modified safrs-react-admin
+  version: 0.0.0
+api_root: '{http_type}://{swagger_host}:{port}/{api}'
+authentication: '{system-default}'
+entities:
+  Category:
+    columns:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+      template: text
+      type: VARCHAR
+    - name: id
+      template: integer
+      type: INTEGER
+    description: Categories to categorize different products.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: name
+    home_template: home_template.html
+    info_list: Categories to categorize different products.
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: tomany
+      fks:
+      - category_id
+      name: ProductCategoryList
+      resource: ProductCategory
+    type: Category
+  Customer:
+    columns:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+      template: text
+      type: VARCHAR
+    - name: balance
+      required: true
+      template: real
+      type: FLOAT
+    - name: credit_limit
+      required: true
+      template: real
+      type: FLOAT
+    - name: id
+      template: integer
+      type: INTEGER
+    description: Customers with personal data, balance, and credit limit.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: name
+    home_template: home_template.html
+    info_list: Customers with personal data, balance, and credit limit.
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: tomany
+      fks:
+      - customer_id
+      name: OrderList
+      resource: Order
+    - direction: tomany
+      fks:
+      - customer_id
+      name: ReviewList
+      resource: Review
+    type: Customer
+  Inventory:
+    columns:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+      template: integer
+      type: INTEGER
+    - name: product_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: stock
+      required: true
+      template: integer
+      type: INTEGER
+    description: Inventory details for products including stock levels.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: id
+    home_template: home_template.html
+    info_list: Inventory details for products including stock levels.
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: toone
+      fks:
+      - product_id
+      name: product
+      resource: Product
+    type: Inventory
+  Order:
+    columns:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+      template: integer
+      type: INTEGER
+    - name: customer_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: order_date
+      required: true
+      template: date
+      type: DATETIME
+    - name: notes
+      template: text
+      type: VARCHAR
+    - name: amount_total
+      required: true
+      template: real
+      type: FLOAT
+    description: Orders made by customers, including a notes field.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: id
+    home_template: home_template.html
+    info_list: Orders made by customers, including a notes field.
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: tomany
+      fks:
+      - order_id
+      name: OrderItemList
+      resource: OrderItem
+    - direction: tomany
+      fks:
+      - order_id
+      name: PaymentList
+      resource: Payment
+    - direction: tomany
+      fks:
+      - order_id
+      name: ShipmentList
+      resource: Shipment
+    - direction: toone
+      fks:
+      - customer_id
+      name: customer
+      resource: Customer
+    type: Order
+  OrderItem:
+    columns:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+      template: integer
+      type: INTEGER
+    - name: order_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: product_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: quantity
+      required: true
+      template: integer
+      type: INTEGER
+    - name: price
+      required: true
+      template: real
+      type: FLOAT
+    description: Items within an order, linking products and orders together.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: id
+    home_template: home_template.html
+    info_list: Items within an order, linking products and orders together.
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: toone
+      fks:
+      - order_id
+      name: order
+      resource: Order
+    - direction: toone
+      fks:
+      - product_id
+      name: product
+      resource: Product
+    type: OrderItem
+  Payment:
+    columns:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+      template: integer
+      type: INTEGER
+    - name: order_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: amount
+      required: true
+      template: real
+      type: FLOAT
+    - name: payment_date
+      required: true
+      template: date
+      type: DATETIME
+    description: Payment information linked to orders.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: id
+    home_template: home_template.html
+    info_list: Payment information linked to orders.
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: toone
+      fks:
+      - order_id
+      name: order
+      resource: Order
+    type: Payment
+  Product:
+    columns:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+      template: text
+      type: VARCHAR
+    - name: price
+      required: true
+      template: real
+      type: FLOAT
+    - name: id
+      template: integer
+      type: INTEGER
+    description: Products available for purchase with detailed information.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: name
+    home_template: home_template.html
+    info_list: Products available for purchase with detailed information.
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: tomany
+      fks:
+      - product_id
+      name: InventoryList
+      resource: Inventory
+    - direction: tomany
+      fks:
+      - product_id
+      name: OrderItemList
+      resource: OrderItem
+    - direction: tomany
+      fks:
+      - product_id
+      name: ProductCategoryList
+      resource: ProductCategory
+    - direction: tomany
+      fks:
+      - product_id
+      name: ReviewList
+      resource: Review
+    - direction: tomany
+      fks:
+      - product_id
+      name: SupplierProductList
+      resource: SupplierProduct
+    type: Product
+  ProductCategory:
+    columns:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+      template: integer
+      type: INTEGER
+    - name: category_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: product_id
+      required: true
+      template: integer
+      type: INTEGER
+    description: Many-to-many relationship between products and categories.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: id
+    home_template: home_template.html
+    info_list: Many-to-many relationship between products and categories.
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: toone
+      fks:
+      - category_id
+      name: category
+      resource: Category
+    - direction: toone
+      fks:
+      - product_id
+      name: product
+      resource: Product
+    type: ProductCategory
+  Review:
+    columns:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+      template: integer
+      type: INTEGER
+    - name: customer_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: product_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: review_text
+      template: text
+      type: VARCHAR
+    - name: rating
+      required: true
+      template: integer
+      type: INTEGER
+    description: Customer reviews of products.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: id
+    home_template: home_template.html
+    info_list: Customer reviews of products.
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: toone
+      fks:
+      - customer_id
+      name: customer
+      resource: Customer
+    - direction: toone
+      fks:
+      - product_id
+      name: product
+      resource: Product
+    type: Review
+  Shipment:
+    columns:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+      template: integer
+      type: INTEGER
+    - name: order_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: shipment_date
+      template: date
+      type: DATETIME
+    description: Shipments related to orders for delivery purposes.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: id
+    home_template: home_template.html
+    info_list: Shipments related to orders for delivery purposes.
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: toone
+      fks:
+      - order_id
+      name: order
+      resource: Order
+    type: Shipment
+  Supplier:
+    columns:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+      template: text
+      type: VARCHAR
+    - name: contact_info
+      template: text
+      type: VARCHAR
+    - name: id
+      template: integer
+      type: INTEGER
+    description: Suppliers providing products to be sold.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: name
+    home_template: home_template.html
+    info_list: Suppliers providing products to be sold.
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: tomany
+      fks:
+      - supplier_id
+      name: SupplierProductList
+      resource: SupplierProduct
+    type: Supplier
+  SupplierProduct:
+    columns:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+      template: integer
+      type: INTEGER
+    - name: product_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: supplier_id
+      required: true
+      template: integer
+      type: INTEGER
+    description: Relationship between suppliers and products they provide.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: id
+    home_template: home_template.html
+    info_list: Relationship between suppliers and products they provide.
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: toone
+      fks:
+      - product_id
+      name: product
+      resource: Product
+    - direction: toone
+      fks:
+      - supplier_id
+      name: supplier
+      resource: Supplier
+    type: SupplierProduct
+settings:
+  HomeJS: /admin-app/home.js
+  max_list_columns: 8
+  style_guide:
+    applicationLocales:
+    - en
+    - es
+    currency_symbol: $
+    currency_symbol_position: left
+    date_format: LL
+    decimal_max: '1000000000'
+    decimal_min: '0'
+    decimal_separator: .
+    edit_on_mode: dblclick
+    include_translation: false
+    keycloak_client_id: alsclient
+    keycloak_realm: kcals
+    keycloak_url: http://localhost:8080
+    locale: en
+    max_decimal_digits: '4'
+    min_decimal_digits: '2'
+    mode: tab
+    pick_style: list
+    serviceType: OntimizeEE
+    startSessionPath: /auth/login
+    style: light
+    thousand_separator: ','
+    use_keycloak: false

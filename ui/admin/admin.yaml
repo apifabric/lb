@@ -1,0 +1,351 @@
+about:
+  date: October 15, 2024 15:46:55
+  recent_changes: works with modified safrs-react-admin
+  version: 0.0.0
+api_root: '{http_type}://{swagger_host}:{port}/{api}'
+authentication: '{system-default}'
+info:
+  number_relationships: 12
+  number_tables: 12
+info_toggle_checked: true
+resources:
+  Category:
+    attributes:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+    - name: id
+    description: Categories to categorize different products.
+    info_list: Categories to categorize different products.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - category_id
+      name: ProductCategoryList
+      resource: ProductCategory
+    type: Category
+    user_key: name
+  Customer:
+    attributes:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+    - name: balance
+      required: true
+    - name: credit_limit
+      required: true
+    - name: id
+    description: Customers with personal data, balance, and credit limit.
+    info_list: Customers with personal data, balance, and credit limit.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - customer_id
+      name: OrderList
+      resource: Order
+    - direction: tomany
+      fks:
+      - customer_id
+      name: ReviewList
+      resource: Review
+    type: Customer
+    user_key: name
+  Inventory:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: product_id
+      required: true
+    - name: stock
+      required: true
+    description: Inventory details for products including stock levels.
+    info_list: Inventory details for products including stock levels.
+    tab_groups:
+    - direction: toone
+      fks:
+      - product_id
+      name: product
+      resource: Product
+    type: Inventory
+    user_key: id
+  Order:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: customer_id
+      required: true
+    - name: order_date
+      required: true
+    - name: notes
+    - name: amount_total
+      required: true
+    description: Orders made by customers, including a notes field.
+    info_list: Orders made by customers, including a notes field.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - order_id
+      name: OrderItemList
+      resource: OrderItem
+    - direction: tomany
+      fks:
+      - order_id
+      name: PaymentList
+      resource: Payment
+    - direction: tomany
+      fks:
+      - order_id
+      name: ShipmentList
+      resource: Shipment
+    - direction: toone
+      fks:
+      - customer_id
+      name: customer
+      resource: Customer
+    type: Order
+    user_key: id
+  OrderItem:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: order_id
+      required: true
+    - name: product_id
+      required: true
+    - name: quantity
+      required: true
+    - name: price
+      required: true
+    description: Items within an order, linking products and orders together.
+    info_list: Items within an order, linking products and orders together.
+    tab_groups:
+    - direction: toone
+      fks:
+      - order_id
+      name: order
+      resource: Order
+    - direction: toone
+      fks:
+      - product_id
+      name: product
+      resource: Product
+    type: OrderItem
+    user_key: id
+  Payment:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: order_id
+      required: true
+    - name: amount
+      required: true
+    - name: payment_date
+      required: true
+    description: Payment information linked to orders.
+    info_list: Payment information linked to orders.
+    tab_groups:
+    - direction: toone
+      fks:
+      - order_id
+      name: order
+      resource: Order
+    type: Payment
+    user_key: id
+  Product:
+    attributes:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+    - name: price
+      required: true
+    - name: id
+    description: Products available for purchase with detailed information.
+    info_list: Products available for purchase with detailed information.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - product_id
+      name: InventoryList
+      resource: Inventory
+    - direction: tomany
+      fks:
+      - product_id
+      name: OrderItemList
+      resource: OrderItem
+    - direction: tomany
+      fks:
+      - product_id
+      name: ProductCategoryList
+      resource: ProductCategory
+    - direction: tomany
+      fks:
+      - product_id
+      name: ReviewList
+      resource: Review
+    - direction: tomany
+      fks:
+      - product_id
+      name: SupplierProductList
+      resource: SupplierProduct
+    type: Product
+    user_key: name
+  ProductCategory:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: category_id
+      required: true
+    - name: product_id
+      required: true
+    description: Many-to-many relationship between products and categories.
+    info_list: Many-to-many relationship between products and categories.
+    tab_groups:
+    - direction: toone
+      fks:
+      - category_id
+      name: category
+      resource: Category
+    - direction: toone
+      fks:
+      - product_id
+      name: product
+      resource: Product
+    type: ProductCategory
+    user_key: id
+  Review:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: customer_id
+      required: true
+    - name: product_id
+      required: true
+    - name: review_text
+    - name: rating
+      required: true
+    description: Customer reviews of products.
+    info_list: Customer reviews of products.
+    tab_groups:
+    - direction: toone
+      fks:
+      - customer_id
+      name: customer
+      resource: Customer
+    - direction: toone
+      fks:
+      - product_id
+      name: product
+      resource: Product
+    type: Review
+    user_key: id
+  Shipment:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: order_id
+      required: true
+    - name: shipment_date
+    description: Shipments related to orders for delivery purposes.
+    info_list: Shipments related to orders for delivery purposes.
+    tab_groups:
+    - direction: toone
+      fks:
+      - order_id
+      name: order
+      resource: Order
+    type: Shipment
+    user_key: id
+  Supplier:
+    attributes:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+    - name: contact_info
+    - name: id
+    description: Suppliers providing products to be sold.
+    info_list: Suppliers providing products to be sold.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - supplier_id
+      name: SupplierProductList
+      resource: SupplierProduct
+    type: Supplier
+    user_key: name
+  SupplierProduct:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: product_id
+      required: true
+    - name: supplier_id
+      required: true
+    description: Relationship between suppliers and products they provide.
+    info_list: Relationship between suppliers and products they provide.
+    tab_groups:
+    - direction: toone
+      fks:
+      - product_id
+      name: product
+      resource: Product
+    - direction: toone
+      fks:
+      - supplier_id
+      name: supplier
+      resource: Supplier
+    type: SupplierProduct
+    user_key: id
+settings:
+  HomeJS: /admin-app/home.js
+  max_list_columns: 8
+  style_guide:
+    applicationLocales:
+    - en
+    - es
+    currency_symbol: $
+    currency_symbol_position: left
+    date_format: LL
+    decimal_max: '1000000000'
+    decimal_min: '0'
+    decimal_separator: .
+    detail_mode: tab
+    edit_on_mode: dblclick
+    include_translation: 'false'
+    keycloak_client_id: alsclient
+    keycloak_realm: kcals
+    keycloak_url: http://localhost:8080
+    locale: en
+    max_decimal_digits: '4'
+    min_decimal_digits: '2'
+    new_mode: dialog
+    pick_style: list
+    row_height: small,
+    serviceType: OntimizeEE
+    startSessionPath: /auth/login
+    style: light
+    thousand_separator: ','
+    use_keycloak: 'false'
